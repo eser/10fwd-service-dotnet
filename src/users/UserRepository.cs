@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 public class UserRepository
 {
-  public DataContext DataContext { get; set; }
+  public DataContext DataContext { get; init; }
 
   public UserRepository(DataContext dataContext)
   {
@@ -27,6 +27,14 @@ public class UserRepository
   public async Task<User> Add(User user)
   {
     var entity = await this.DataContext.Users.AddAsync(user);
+    await this.DataContext.SaveChangesAsync();
+
+    return entity.Entity;
+  }
+
+  public async Task<User> Update(Guid id, User user)
+  {
+    var entity = this.DataContext.Users.Update(user with { Id = id });
     await this.DataContext.SaveChangesAsync();
 
     return entity.Entity;
