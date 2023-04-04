@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-
 // [PrimaryKey(nameof(Organization), nameof(User))]
 public record OrganizationMembership
 {

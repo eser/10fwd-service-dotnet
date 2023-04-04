@@ -2,7 +2,9 @@ public static partial class Router
 {
   public static RouteGroupBuilder MapHomeRoutes(this RouteGroupBuilder routes)
   {
-    routes.MapGet("/", () => Results.Ok());
+    var resourceGetAll = () => Results.Ok();
+
+    routes.MapGet("/", resourceGetAll);
 
     return routes;
   }

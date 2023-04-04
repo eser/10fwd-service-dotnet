@@ -1,15 +1,19 @@
+using Microsoft.AspNetCore.Mvc;
+
 public static partial class Router
 {
   public static RouteGroupBuilder MapUsersRoutes(this RouteGroupBuilder routes)
   {
-    routes.MapGet("/", (UserRepository userRepository) =>
+    var resourceGetAll = ([FromServices] UserRepository userRepository) =>
     {
       var users = userRepository.GetAll();
 
-      return Results.Ok(users);
-    });
+      var result = UserResourceModel.FromUsers(users);
 
-    routes.MapGet("/{username}", async (UserRepository userRepository, string username) =>
+      return Results.Ok(result);
+    };
+
+    var resourceGetByUsername = async ([FromServices] UserRepository userRepository, [FromRoute] string username) =>
     {
       var user = await userRepository.GetByUsername(username);
 
@@ -18,15 +22,42 @@ public static partial class Router
         return Results.NotFound();
       }
 
-      return Results.Ok(user);
-    });
+      var result = UserResourceModel.FromUser(user);
 
-    routes.MapPost("/:add", (UserRepository userRepository, User userInput) =>
+      return Results.Ok(result);
+    };
+
+    var actionAdd = ([FromServices] UserRepository userRepository, [FromBody] UserAddActionRequestModel requestModel) =>
     {
-      var user = userRepository.Add(userInput);
+      var user = new User()
+      {
+        Id = Guid.NewGuid(),
+        Username = requestModel.Username,
+        Email = requestModel.Email,
+        Password = requestModel.Password,
+        Fullname = requestModel.Fullname,
+        Bio = requestModel.Bio ?? "",
+        ProfilePictureUri = requestModel.ProfilePictureUri ?? "",
+        WebSiteUri = requestModel.WebSiteUri ?? "",
+        GitHubHandle = requestModel.GitHubHandle ?? "",
+        TwitterHandle = requestModel.TwitterHandle ?? "",
+      };
 
-      return Results.Created($"/users/{user.Id}", user);
-    });
+      var createdUser = userRepository.Add(user);
+
+      var result = UserResourceModel.FromUser(user);
+
+      return Results.Created($"/users/{result.Id}", result);
+    };
+
+    routes.MapGet("/", resourceGetAll)
+      .Produces<UserResourceModel[]>();
+
+    routes.MapGet("/{username}", resourceGetByUsername)
+      .Produces<UserResourceModel>();
+
+    routes.MapPost("/:add", actionAdd)
+      .Accepts<UserAddActionRequestModel>(false, "application/json");
 
     return routes;
   }

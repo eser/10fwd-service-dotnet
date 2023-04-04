@@ -1,0 +1,21 @@
+- [x] Organizasyonların tipi olacak
+  - Meetup topluluğu (Dev Izmir)
+  - Teknoloji topluluğu (Jstanbul, Ruby Istanbul, JUG)
+  - Eğitim/kariyer topluluğu (kamp.us, patika, findmentor, patika v.s.)
+  - Hobi topluluğu (kahve içen yazılımcılar, bilim kurgu / fantastik)
+  - İçerik mecrası (opencast, eser özvataf blog, eser özvataf youtube, codefiction)
+- Profil özellikleri
+  - [x] Bio
+  - [x] Web Sitesi
+  - [x] GitHub
+  - [x] Twitter
+  - LinkedIn
+- Activities
+  - Talk (I was the speaker): Speakerdeck
+  - Attendance (Joined to the event)
+  - Event (I organized the event)
+  - Content (I created the content): Link, YouTube, Podcast, Article (preview url, url)
+
+- Actions and Resource DTOs (Request and Response classes)
+- Validation
+- Yetkilendirme?

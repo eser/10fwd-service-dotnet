@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-
 public class OrganizationMembershipRepository
 {
   public DataContext DataContext { get; init; }

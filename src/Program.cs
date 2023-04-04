@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
 
@@ -11,7 +12,9 @@ builder.Services.AddSqlite<DataContext>(connectionString);
 builder.Services.AddTransient<UserRepository>();
 builder.Services.AddTransient<OrganizationRepository>();
 builder.Services.AddTransient<OrganizationMembershipRepository>();
-builder.Services.AddTransient<PageRepository>();
+builder.Services.AddTransient<ProfileRepository>();
+
+builder.Services.AddHealthChecks();
 
 builder.Services.AddAuthorization();
 builder.Services.AddEndpointsApiExplorer();
@@ -43,8 +46,10 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 {
   options.SerializerOptions.WriteIndented = true;
   options.SerializerOptions.IncludeFields = true;
+  options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
   // options.SerializerOptions.AllowTrailingCommas = true;
   options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+  options.SerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
 });
 
 var app = builder.Build();
@@ -58,12 +63,15 @@ app.UseSwaggerUI(options =>
 
 if (app.Environment.IsDevelopment())
 {
+  app.UseHttpLogging();
   app.UseDeveloperExceptionPage();
 }
+
+app.MapHealthChecks("/health-check");
 
 app.MapGroup("/").MapHomeRoutes();
 app.MapGroup("/users/").MapUsersRoutes();
 app.MapGroup("/orgs/").MapOrganizationsRoutes();
-app.MapGroup("/pages/").MapPagesRoutes();
+app.MapGroup("/profiles/").MapProfilesRoutes();
 
 app.Run();
