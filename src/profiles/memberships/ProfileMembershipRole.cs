@@ -1,6 +1,6 @@
-public enum OrganizationMembershipRole
+public enum ProfileMembershipRole
 {
-  Founder,
+  Owner,
   Lead,
   Maintainer,
   Contributor,

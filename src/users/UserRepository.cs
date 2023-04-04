@@ -26,17 +26,17 @@ public class UserRepository
 
   public async Task<User> Add(User user)
   {
-    var entity = await this.DataContext.Users.AddAsync(user);
+    var record = await this.DataContext.Users.AddAsync(user);
     await this.DataContext.SaveChangesAsync();
 
-    return entity.Entity;
+    return record.Entity;
   }
 
   public async Task<User> Update(Guid id, User user)
   {
-    var entity = this.DataContext.Users.Update(user with { Id = id });
+    var record = this.DataContext.Users.Update(user with { Id = id });
     await this.DataContext.SaveChangesAsync();
 
-    return entity.Entity;
+    return record.Entity;
   }
 }

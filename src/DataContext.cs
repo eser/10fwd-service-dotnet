@@ -7,7 +7,6 @@ public class DataContext : DbContext
   }
 
   public DbSet<User> Users { get; set; } = null!;
-  public DbSet<Organization> Organizations { get; set; } = null!;
-  public DbSet<OrganizationMembership> OrganizationMemberships { get; set; } = null!;
   public DbSet<Profile> Profiles { get; set; } = null!;
+  public DbSet<ProfileMembership> ProfileMemberships { get; set; } = null!;
 }

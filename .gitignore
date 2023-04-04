@@ -1,3 +1,4 @@
 obj/
 bin/
 local.db-*
+secrets.json

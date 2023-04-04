@@ -12,6 +12,10 @@ public class ProfileRepository
   public IAsyncEnumerable<Profile> GetAll()
   {
     return this.DataContext.Profiles.AsAsyncEnumerable();
+    // return this.DataContext.Profiles
+    //   .Include(x => x.Memberships)
+    //     .ThenInclude(x => x.User)
+    //   .AsAsyncEnumerable();
   }
 
   public ValueTask<Profile?> GetById(Guid id)
@@ -26,17 +30,17 @@ public class ProfileRepository
 
   public async Task<Profile> Add(Profile profile)
   {
-    var entity = await this.DataContext.Profiles.AddAsync(profile);
+    var record = await this.DataContext.Profiles.AddAsync(profile);
     await this.DataContext.SaveChangesAsync();
 
-    return entity.Entity;
+    return record.Entity;
   }
 
   public async Task<Profile> Update(Guid id, Profile profile)
   {
-    var entity = this.DataContext.Profiles.Update(profile with { Id = id });
+    var record = this.DataContext.Profiles.Update(profile with { Id = id });
     await this.DataContext.SaveChangesAsync();
 
-    return entity.Entity;
+    return record.Entity;
   }
 }

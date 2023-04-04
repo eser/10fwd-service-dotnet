@@ -2,17 +2,20 @@ using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DataContext");
 
-builder.Services.AddSqlite<DataContext>(connectionString);
+builder.Services.AddDbContext<DataContext>(options =>
+{
+  options.UseNpgsql(connectionString);
+});
 
 builder.Services.AddTransient<UserRepository>();
-builder.Services.AddTransient<OrganizationRepository>();
-builder.Services.AddTransient<OrganizationMembershipRepository>();
 builder.Services.AddTransient<ProfileRepository>();
+builder.Services.AddTransient<ProfileMembershipRepository>();
 
 builder.Services.AddHealthChecks();
 
@@ -71,7 +74,6 @@ app.MapHealthChecks("/health-check");
 
 app.MapGroup("/").MapHomeRoutes();
 app.MapGroup("/users/").MapUsersRoutes();
-app.MapGroup("/orgs/").MapOrganizationsRoutes();
 app.MapGroup("/profiles/").MapProfilesRoutes();
 
 app.Run();

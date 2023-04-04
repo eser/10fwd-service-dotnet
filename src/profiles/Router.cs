@@ -41,11 +41,39 @@ public static partial class Router
     //   return Results.Created($"/profiles/{profile.Id}", profile);
     // };
 
+    // var actionFollow = async ([FromServices] ProfileRepository profileRepository, [FromServices] UserRepository userRepository, [FromServices] ProfileMembershipRepository profileMembershipRepository, [FromBody] string slug, [FromBody] Guid userId) =>
+    // {
+    //   var profile = await profileRepository.GetBySlug(slug);
+
+    //   if (profile is null)
+    //   {
+    //     return Results.NotFound();
+    //   }
+
+    //   var user = await userRepository.GetById(userId);
+
+    //   if (user is null)
+    //   {
+    //     return Results.NotFound();
+    //   }
+
+    //   var profileMembership = profileMembershipRepository.Add(new ProfileMembership
+    //   {
+    //     Id = Guid.NewGuid(),
+    //     Profile = profile,
+    //     User = user,
+    //     Role = ProfileMembershipRole.Follower,
+    //   });
+
+    //   return Results.Ok();
+    // };
+
     routes.MapGet("/", resourceGetAll);
     routes.MapGet("/{slug}", resourceGetBySlug);
 
     // routes.MapPost("/:add", actionAdd);
     // routes.MapPost("/:update", actionUpdate);
+    // routes.MapPost("/:follow", actionFollow);
 
     return routes;
   }

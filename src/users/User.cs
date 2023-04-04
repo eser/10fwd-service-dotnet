@@ -10,5 +10,5 @@ public record User
   public required string WebSiteUri { get; set; }
   public required string GitHubHandle { get; set; }
   public required string TwitterHandle { get; set; }
-  public ICollection<OrganizationMembership> OrganizationMemberships { get; } = new List<OrganizationMembership>();
+  public ICollection<ProfileMembership> ProfileMemberships { get; } = new List<ProfileMembership>();
 }
